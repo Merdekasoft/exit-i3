@@ -2,17 +2,17 @@ from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
-from ulauncher.api.shared.item.SmallResultItem import SmallResultItem
-from ulauncher.api.shared.action.RenderResultListAction import (
-    RenderResultListAction
-)
+from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 from ulauncher.utils.image_loader import icon_theme, Gtk
- 
+import os
+
 def get_icon_path(name, size):
     info = icon_theme.lookup_icon(name, size, Gtk.IconLookupFlags.FORCE_SIZE)
     if info is not None:
         return info.get_filename()
+    # Fallback icon if not found
+    return get_icon_path('system-log-out', size)
 
 def create_item(name, icon, keyword, description, on_enter):
     return (
@@ -21,31 +21,35 @@ def create_item(name, icon, keyword, description, on_enter):
             name=name,
             description=description,
             icon=get_icon_path(icon, ExtensionResultItem.ICON_SIZE),
-            on_enter=RunScriptAction('xfce4-session-logout --{}'.format(on_enter), None),
+            on_enter=RunScriptAction('systemctl {}'.format(on_enter), None),
         )
     )
 
 class XFCESessionExtension(Extension):
     def __init__(self):
         super(XFCESessionExtension, self).__init__()
-        self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
+        if self.is_i3wm():
+            self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
+        else:
+            self.log_error("This extension is intended for use only in i3wm.")
 
+    def is_i3wm(self):
+        # Check if the window manager is i3
+        return 'i3' in os.getenv('XDG_CURRENT_DESKTOP', '')
 
 items_cache = [
-    create_item('Logout', 'xfsm-logout', 'logout', 'Session logout', 'logout'),
-    create_item('Reboot', 'xfsm-reboot', 'reboot', 'Reboot computer', 'reboot'),
-    create_item('Shutdown', 'xfsm-shutdown', 'shutdown', 'Shutdown computer', 'halt'),
-    create_item('Suspend', 'xfsm-suspend', 'suspend', 'Suspend computer', 'suspend'),
-    create_item('Hibernate', 'xfsm-hibernate', 'hibernate', 'Hibernate computer', 'hibernate'),
+    create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'stop'),
+    create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'reboot'),
+    create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'poweroff'),
+    create_item('Suspend', 'system-suspend', 'suspend', 'Suspend computer', 'suspend'),
+    create_item('Hibernate', 'system-hibernate', 'hibernate', 'Hibernate computer', 'hibernate'),
 ]
-
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         term = (event.get_argument() or '').lower()
-        items = [i for name, i in items_cache if name.startswith(term)]
+        items = [i for keyword, i in items_cache if keyword.startswith(term)]
         return RenderResultListAction(items)
-
 
 if __name__ == '__main__':
     XFCESessionExtension().run()

@@ -15,14 +15,11 @@ def get_icon_path(name, size):
     return get_icon_path('system-log-out', size)
 
 def create_item(name, icon, keyword, description, on_enter):
-    return (
-        keyword,
-        ExtensionResultItem(
-            name=name,
-            description=description,
-            icon=get_icon_path(icon, ExtensionResultItem.ICON_SIZE),
-            on_enter=RunScriptAction(on_enter, None),
-        )
+    return ExtensionResultItem(
+        name=name,
+        description=description,
+        icon=get_icon_path(icon, ExtensionResultItem.ICON_SIZE),
+        on_enter=RunScriptAction(on_enter, None)
     )
 
 class i3SessionExtension(Extension):
@@ -34,19 +31,19 @@ class i3SessionExtension(Extension):
             self.log_error("This extension is intended for use only in i3wm.")
 
     def is_i3wm(self):
-        # Check if the window manager is i3
         return 'i3' in os.getenv('XDG_CURRENT_DESKTOP', '')
 
 items_cache = [
-    create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'i3-msg exit'),
-    create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'systemctl reboot'),
-    create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'systemctl poweroff'),
+    ('logout', create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'i3-msg exit')),
+    ('reboot', create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'systemctl reboot')),
+    ('shutdown', create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'systemctl poweroff')),
+    ('restart', create_item('Restart', 'system-reboot', 'restart', 'Restart computer', 'systemctl reboot')),
 ]
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         term = (event.get_argument() or '').lower()
-        items = [i for keyword, i in items_cache if keyword.startswith(term)]
+        items = [item for keyword, item in items_cache if keyword.startswith(term)]
         return RenderResultListAction(items)
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ def create_item(name, icon, keyword, description, on_enter):
             name=name,
             description=description,
             icon=get_icon_path(icon, ExtensionResultItem.ICON_SIZE),
-            on_enter=RunScriptAction('systemctl {}'.format(on_enter), None),
+            on_enter=RunScriptAction(on_enter, None),
         )
     )
 
@@ -38,11 +38,9 @@ class XFCESessionExtension(Extension):
         return 'i3' in os.getenv('XDG_CURRENT_DESKTOP', '')
 
 items_cache = [
-    create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'stop'),
-    create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'reboot'),
-    create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'poweroff'),
-    create_item('Suspend', 'system-suspend', 'suspend', 'Suspend computer', 'suspend'),
-    create_item('Hibernate', 'system-hibernate', 'hibernate', 'Hibernate computer', 'hibernate'),
+    create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'i3-msg exit'),
+    create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'systemctl reboot'),
+    create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'systemctl poweroff'),
 ]
 
 class KeywordQueryEventListener(EventListener):

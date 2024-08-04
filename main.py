@@ -25,9 +25,9 @@ def create_item(name, icon, keyword, description, on_enter):
         )
     )
 
-class XFCESessionExtension(Extension):
+class i3SessionExtension(Extension):
     def __init__(self):
-        super(XFCESessionExtension, self).__init__()
+        super(i3SessionExtension, self).__init__()
         if self.is_i3wm():
             self.subscribe(KeywordQueryEvent, KeywordQueryEventListener())
         else:
@@ -50,4 +50,4 @@ class KeywordQueryEventListener(EventListener):
         return RenderResultListAction(items)
 
 if __name__ == '__main__':
-    XFCESessionExtension().run()
+    i3SessionExtension().run()

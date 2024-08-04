@@ -14,6 +14,27 @@
       "name": "Exit i3",
       "description": "Session logout functions for i3 desktop.",
       "default_value": "exit"
+    },
+    {
+      "id": "reboot_ext",
+      "type": "keyword",
+      "name": "Reboot i3",
+      "description": "Reboot the computer.",
+      "default_value": "reboot"
+    },
+    {
+      "id": "shutdown_ext",
+      "type": "keyword",
+      "name": "Shutdown i3",
+      "description": "Shutdown the computer.",
+      "default_value": "shutdown"
+    },
+    {
+      "id": "restart_ext",
+      "type": "keyword",
+      "name": "Restart i3",
+      "description": "Restart the computer.",
+      "default_value": "restart"
     }
   ]
 }

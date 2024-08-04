@@ -9,7 +9,7 @@
   },
   "preferences": [
     {
-      "id": "i3_ext",
+      "id": "exit_ext",
       "type": "keyword",
       "name": "Exit i3",
       "description": "Session logout functions for i3 desktop.",

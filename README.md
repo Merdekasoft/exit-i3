@@ -1,4 +1,4 @@
-A XFCE extension for the [ulauncher](https://ulauncher.io/).
+A i3 extension for the [ulauncher](https://ulauncher.io/).
 
 You can do session actions like reboot/logout/shutdown via typing "exit".
 

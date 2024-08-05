@@ -2,7 +2,7 @@
   "required_api_version": "^2.0.0",
   "name": "Exit i3",
   "description": "Session logout functions for i3 desktop.",
-  "developer_name": "B OS",
+  "developer_name": "Merdekasoft",
   "icon": "images/exit.png",
   "version": "3.0.0",
   "options": {

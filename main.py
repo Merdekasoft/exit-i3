@@ -37,7 +37,6 @@ items_cache = [
     ('logout', create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'i3-msg exit')),
     ('reboot', create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'systemctl reboot')),
     ('shutdown', create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'systemctl poweroff')),
-    ('restart', create_item('Restart', 'system-reboot', 'restart', 'Restart computer', 'systemctl reboot')),
 ]
 
 class KeywordQueryEventListener(EventListener):

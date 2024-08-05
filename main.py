@@ -14,7 +14,7 @@ def get_icon_path(name, size):
     # Fallback icon if not found
     return get_icon_path('system-log-out', size)
 
-def create_item(name, icon, description, on_enter):
+def create_item(name, icon, keyword, description, on_enter):
     return ExtensionResultItem(
         name=name,
         description=description,
@@ -33,20 +33,17 @@ class i3SessionExtension(Extension):
     def is_i3wm(self):
         return 'i3' in os.getenv('XDG_CURRENT_DESKTOP', '')
 
-items_cache = {
-    'logout': create_item('Logout', 'system-log-out', 'Session logout', 'i3-msg exit'),
-    'restart': create_item('Restart', 'system-reboot', 'Restart computer', 'systemctl reboot'),
-    'shutdown': create_item('Shutdown', 'system-shutdown', 'Shutdown computer', 'systemctl poweroff')
-}
+items_cache = [
+    ('logout', create_item('Logout', 'system-log-out', 'logout', 'Session logout', 'i3-msg exit')),
+    ('reboot', create_item('Reboot', 'system-reboot', 'reboot', 'Reboot computer', 'systemctl reboot')),
+    ('shutdown', create_item('Shutdown', 'system-shutdown', 'shutdown', 'Shutdown computer', 'systemctl poweroff')),
+    ('restart', create_item('Restart', 'system-reboot', 'restart', 'Restart computer', 'systemctl reboot')),
+]
 
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         term = (event.get_argument() or '').lower()
-        items = []
-        if term == '':
-            items = items_cache.values()
-        else:
-            items = [item for keyword, item in items_cache.items() if keyword.startswith(term)]
+        items = [item for keyword, item in items_cache if keyword.startswith(term)]
         return RenderResultListAction(items)
 
 if __name__ == '__main__':

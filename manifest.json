@@ -28,13 +28,7 @@
       "name": "Shutdown i3",
       "description": "Shutdown the computer.",
       "default_value": "shutdown"
-    },
-    {
-      "id": "restart_ext",
-      "type": "keyword",
-      "name": "Restart i3",
-      "description": "Restart the computer.",
-      "default_value": "restart"
     }
+    
   ]
 }

@@ -17,11 +17,11 @@
       "default_value": "exit"
     },
     {
-      "id": "reboot_ext",
+      "id": "restart_ext",
       "type": "keyword",
-      "name": "Reboot i3",
-      "description": "Reboot the computer.",
-      "default_value": "reboot"
+      "name": "Restart i3",
+      "description": "Restart the computer.",
+      "default_value": "restart"
     },
     {
       "id": "shutdown_ext",
